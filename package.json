@@ -1,0 +1,27 @@
+{
+  "name": "api_backend",
+  "version": "1.0.0",
+  "description": "API back pour la formation React",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon ./src/public/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Formation-React-2025/api_backend.git"
+  },
+  "author": "Thibault Bondetti",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Formation-React-2025/api_backend/issues"
+  },
+  "homepage": "https://github.com/Formation-React-2025/api_backend#readme",
+  "dependencies": {
+    "date-fns": "4.1.0",
+    "express": "5.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "3.1.9"
+  }
+}
