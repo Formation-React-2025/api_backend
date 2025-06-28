@@ -1,12 +1,19 @@
 const usersJson = require('../datas/users.json');
 const User = require('../models/User.model');
+const IdentifiantUtils = require('../utils/Identifiant.utils');
+
 const {
   toDate,
 } = require('../utils/Date.utils.js');
+
 const {
   isAfter,
   isBefore,
 } = require('date-fns');
+
+const {
+  generateId,
+} = IdentifiantUtils;
 
 const EMAIL_REGEX = /^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gim;
 
@@ -16,7 +23,7 @@ const likesTab = (string, parts) => parts.reduce((acc, part) => acc && likes(str
 const NO_FILTER = () => true;
 
 const filter = ({
-  prenom, nom, sexes, dateNaissanceMin, dateNaissanceMax, email,
+  prenom, nom, civilites, dateNaissanceMin, dateNaissanceMax, email,
 }) => {
   const prenoms = prenom?.split(/\s/g)?.map((p) => p?.trim() ?? '')?.filter((p) => p !== '');
   const filterPrenom = !prenoms ? NO_FILTER : (u) => likesTab(u.prenom, prenom);
@@ -24,8 +31,8 @@ const filter = ({
   const noms = nom?.split(/\s/g)?.map((n) => n?.trim() ?? '')?.filter((n) => n !== '');
   const filterNom = !noms ? NO_FILTER : (u) => likesTab(u.nom, noms);
 
-  const sexesLower = sexes?.map((s) => s.trim().toUpperCase());
-  const filterSexe = !sexes ? NO_FILTER : ((u) => (sexesLower.indexOf(u.sexe) > -1))
+  const civilitesLower = civilites?.map((c) => c.trim().toUpperCase());
+  const filterCivilites = !civilites ? NO_FILTER : ((u) => (civilitesLower.indexOf(u.civilite) > -1))
 
   const dateMin = toDate(dateNaissanceMin, true, false);
   const filterDateNaissanceMin = !dateMin ? NO_FILTER : (u) => isAfter(u.dateNaissance, dateMin);
@@ -39,7 +46,7 @@ const filter = ({
   const filters = [
     filterPrenom,
     filterNom,
-    filterSexe,
+    filterCivilites,
     filterDateNaissanceMin,
     filterDateNaissanceMax,
     filterEmail,
@@ -49,14 +56,14 @@ const filter = ({
 };
 
 class UserServices {
-  maxId;
   users;
+  allIds;
   userById;
   emails;
 
   constructor() {
     this.users = usersJson.map((u) => new User(u));
-    this.maxId = this.users.map((u) => u.id).sort().findLast(() => true);
+    this.allIds = new Set(this.users.map((u) => u.id));
     this.userById = new Map(this.users.map((u) => [
       u.id,
       u
@@ -65,7 +72,6 @@ class UserServices {
   }
 
   getAll(queryParams) {
-    console.log('queryParams === ', queryParams);
     if (!queryParams) {
       return this.users;
     }
@@ -89,14 +95,14 @@ class UserServices {
   create(data) {
     this.checkValidity(data, true);
 
-    const id = this.maxId + 1;
+    const id = generateId(this.allIds);
     const user = new User({
       ...data,
       id,
     });
 
-    this.maxId = id;
     this.users.push(user);
+    this.allIds.add(id);
     this.userById.put(user.id, User);
     this.emails.add(user.email);
 
@@ -106,7 +112,7 @@ class UserServices {
   update(id, data) {
     const user = this.getById(id);
 
-    this.checkValidity(data);
+    this.checkValidity(data, false);
 
     const trimedMail = data.email.trim();
     if (trimedMail !== user.email) {
@@ -122,6 +128,7 @@ class UserServices {
   delete(id) {
     const user = this.getById(id);
 
+    this.allIds.delete(user.id);
     this.emails.delete(user.email);
     this.users.splice(this.users.indexOf(user), 1);
     this.userById.delete(user.id);

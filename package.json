@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/Formation-React-2025/api_backend#readme",
   "dependencies": {
+    "cors": "2.8.5",
     "date-fns": "4.1.0",
     "express": "5.1.0"
   },
