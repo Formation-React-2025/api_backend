@@ -1,6 +1,11 @@
 const usersJson = require('../datas/users.json');
 const User = require('../models/User.model');
 const IdentifiantUtils = require('../utils/Identifiant.utils');
+const CivilitesConstants = require('../constants/Civilites.constants');
+
+const {
+  CIVILITES,
+} = CivilitesConstants;
 
 const {
   toDate,
@@ -23,7 +28,7 @@ const likesTab = (string, parts) => parts.reduce((acc, part) => acc && likes(str
 const NO_FILTER = () => true;
 
 const filter = ({
-  prenom, nom, civilites, dateNaissanceMin, dateNaissanceMax, email,
+  prenom, nom, civilite, dateNaissanceMin, dateNaissanceMax, email,
 }) => {
   const prenoms = prenom?.split(/\s/g)?.map((p) => p?.trim() ?? '')?.filter((p) => p !== '');
   const filterPrenom = !prenoms ? NO_FILTER : (u) => likesTab(u.prenom, prenom);
@@ -31,8 +36,8 @@ const filter = ({
   const noms = nom?.split(/\s/g)?.map((n) => n?.trim() ?? '')?.filter((n) => n !== '');
   const filterNom = !noms ? NO_FILTER : (u) => likesTab(u.nom, noms);
 
-  const civilitesLower = civilites?.map((c) => c.trim().toUpperCase());
-  const filterCivilites = !civilites ? NO_FILTER : ((u) => (civilitesLower.indexOf(u.civilite) > -1))
+  const civilites = civilite?.split(/\s/g)?.map((c) => c?.trim() ?? '')?.filter((c) => c !== '');
+  const filterCivilites = !civilites ? NO_FILTER : ((u) => civilites.indexOf(u.civilite) > -1);
 
   const dateMin = toDate(dateNaissanceMin, true, false);
   const filterDateNaissanceMin = !dateMin ? NO_FILTER : (u) => isAfter(u.dateNaissance, dateMin);
@@ -135,7 +140,7 @@ class UserServices {
   }
 
   checkValidity({
-    email, prenom, nom, sexe, dateNaissance
+    email, prenom, nom, civilite, dateNaissance
   }, isCreate) {
     const emailTrimed = email?.trim() ?? '';
     if (!emailTrimed) {
@@ -158,8 +163,12 @@ class UserServices {
       throw new Error('Nom obligatoire.');
     }
 
-    if (!sexe?.trim()) {
-      throw new Error('Sexe obligatoire.');
+    if (!civilite?.trim()) {
+      throw new Error('Civilité obligatoire.');
+    }
+
+    if (!CIVILITES.indexOf(civilite) > -1) {
+      throw new Error(`Civilité incorrecte. Valeurs possibles = ${CIVILITES}.`);
     }
 
     if (!dateNaissance?.trim()) {

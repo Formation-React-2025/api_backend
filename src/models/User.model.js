@@ -8,10 +8,10 @@ const {
 class User {
   constructor(u) {
     this.id = u.id?.trim() ?? '';
-    this.createdAt = toTimestamp(u.createdAt);
-    this.createdBy = u.createdBy?.trim() ?? '';
-    this.modifiedAt = toTimestamp(u.modifiedAt);
-    this.modifiedBy = u.modifiedBy?.trim() ?? '';
+    this.createdAt = u.createdAt ? toTimestamp(u.createdAt) : new Date();
+    this.createdBy = u.createdBy?.trim() ?? 'Utilisateur';
+    this.modifiedAt = u.modifiedAt ? toTimestamp(u.modifiedAt) : new Date();
+    this.modifiedBy = u.modifiedBy?.trim() ?? 'Utilisateur';
     this.prenom = u.prenom?.trim() ?? '';
     this.nom = u.nom?.trim() ?? '';
     this.civilite = u.civilite?.trim() ?? '';
