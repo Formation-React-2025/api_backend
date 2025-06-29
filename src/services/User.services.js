@@ -108,7 +108,7 @@ class UserServices {
 
     this.users.push(user);
     this.allIds.add(id);
-    this.userById.put(user.id, User);
+    this.userById.set(user.id, User);
     this.emails.add(user.email);
 
     return user;
@@ -167,8 +167,9 @@ class UserServices {
       throw new Error('Civilité obligatoire.');
     }
 
-    if (!CIVILITES.indexOf(civilite) > -1) {
-      throw new Error(`Civilité incorrecte. Valeurs possibles = ${CIVILITES}.`);
+    if (CIVILITES.indexOf(civilite) <= -1) {
+      const valeursPossibles = CIVILITES.map((c) => `"${c}"`).join(', ');
+      throw new Error(`Civilité incorrecte. Valeurs possibles = [${valeursPossibles}].`);
     }
 
     if (!dateNaissance?.trim()) {

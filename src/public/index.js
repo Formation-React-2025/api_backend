@@ -6,6 +6,8 @@ app.use(cors({
   origin: 'http://localhost:3000'
 }));
 
+app.use(express.json());
+
 const UserService = require('../services/User.services');
 
 const userService = new UserService();

@@ -13,7 +13,7 @@ class User {
     this.modifiedAt = u.modifiedAt ? toTimestamp(u.modifiedAt) : new Date();
     this.modifiedBy = u.modifiedBy?.trim() ?? 'Utilisateur';
     this.prenom = u.prenom?.trim() ?? '';
-    this.nom = u.nom?.trim() ?? '';
+    this.nom = u.nom?.trim()?.toUpperCase() ?? '';
     this.civilite = u.civilite?.trim() ?? '';
     this.dateNaissance = toDate(u.dateNaissance);
     this.email = u.email?.trim() ?? '';
@@ -25,7 +25,7 @@ class User {
     this.modifiedAt(new Date());
     this.modifiedBy = 'Utilisateur';
     this.prenom = prenom?.trim() ?? '';
-    this.nom = nom?.trim() ?? '';
+    this.nom = nom?.trim()?.toUpperCase() ?? '';
     this.civilite = civilite?.trim() ?? '';
     this.dateNaissance = toDate(dateNaissance);
     this.email = email?.trim() ?? '';
