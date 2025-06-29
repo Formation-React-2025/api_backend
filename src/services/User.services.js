@@ -20,8 +20,7 @@ const {
   generateId,
 } = IdentifiantUtils;
 
-const EMAIL_REGEX = /^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gim;
-
+const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const likes = (string, part) => string.toLowerCase().indexOf(part.trim().toLowerCase()) > -1;
 
 const likesTab = (string, parts) => parts.reduce((acc, part) => acc && likes(string, part), true)
