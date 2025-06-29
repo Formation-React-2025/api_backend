@@ -107,7 +107,7 @@ class UserServices {
 
     this.users.push(user);
     this.allIds.add(id);
-    this.userById.set(user.id, User);
+    this.userById.set(user.id, user);
     this.emails.add(user.email);
 
     return user;
