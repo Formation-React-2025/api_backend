@@ -15,4 +15,4 @@ const CivilitesConstants = {
   CIVILITES,
 };
 
-export default CivilitesConstants;
+module.exports = CivilitesConstants;
