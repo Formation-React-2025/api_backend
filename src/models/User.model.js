@@ -22,7 +22,7 @@ class User {
   updateValues({
     email, prenom, nom, civilite, dateNaissance
   }){
-    this.modifiedAt(new Date());
+    this.modifiedAt = new Date();
     this.modifiedBy = 'Utilisateur';
     this.prenom = prenom?.trim() ?? '';
     this.nom = nom?.trim()?.toUpperCase() ?? '';
