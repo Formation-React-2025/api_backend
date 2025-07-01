@@ -136,6 +136,8 @@ class UserServices {
     this.emails.delete(user.email);
     this.users.splice(this.users.indexOf(user), 1);
     this.userById.delete(user.id);
+
+    return user.id;
   }
 
   checkValidity({

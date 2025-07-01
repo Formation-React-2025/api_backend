@@ -31,8 +31,8 @@ app.get('/users/:id', (req, res) => {
 
 app.delete('/users/:id', (req, res) => {
   try {
-    userService.delete(req.params.id);
-    res.status(200).json(req.params.id);
+    const idDeleted = userService.delete(req.params.id);
+    res.status(200).json(idDeleted);
   }catch (error) {
     res.status(400).json(error?.message)
   }
