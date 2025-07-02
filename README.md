@@ -34,6 +34,6 @@ La création et modification prennent en body les attributs suivants :
 | `civilite`       | Civilité de l'utilisateur           | `string`     | `"M"` ou  `"MLLE"` ou `"MME"`  | "M"                          |
 | `prenom`         | Prénom de l'utilisateur             | `string`     |                                | "Jeffrey"                    |
 | `nom`            | Nom de l'utilisateur                | `string`     |                                | "Chapuis"                    |
-| `dateNaissance`  | Date de naissance de l'utilisateur  | `date`       | `yyyy-MM-dd`                   | "2001-03-04"                 |
+| `dateNaissance`  | Date de naissance de l'utilisateur  | `string`       | `yyyy-MM-dd`                   | "2001-03-04"                 |
 | `email`          | E-mail de l'utilisateur             | `string`     |                                | "jeffrey.chapuis@yahoo.com"  |
 
